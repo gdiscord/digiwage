@@ -5,11 +5,12 @@
 
 #include "httprpc.h"
 
-#include "base58.h"
+//#include "base58.h"
 #include "chainparams.h"
 #include "httpserver.h"
 #include "rpc/protocol.h"
 #include "rpc/server.h"
+#include "key_io.h"
 #include "random.h"
 #include "sync.h"
 #include "util.h"

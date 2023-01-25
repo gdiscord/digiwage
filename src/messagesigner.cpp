@@ -5,7 +5,6 @@
 
 //#include "base58.h"
 #include "key_io.h"
-#include "key.h"
 #include "hash.h"
 #include "main.h" // For strMessageMagic
 #include "messagesigner.h"

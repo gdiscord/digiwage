@@ -296,6 +296,17 @@ CScript CombineSignatures(const CScript& scriptPubKey, const BaseSignatureChecke
     return CombineSignatures(scriptPubKey, checker, txType, vSolutions, stack1, stack2);
 }
 
+template<typename M, typename K, typename V>
+bool LookupHelper(const M& map, const K& key, V& value)
+{
+     auto it = map.find(key);
+     if (it != map.end()) {
+         value = it->second;
+         return true;
+     }
+     return false;
+}
+
 bool PublicOnlySigningProvider::GetCScript(const CScriptID &scriptid, CScript& script) const
 {
     return m_provider->GetCScript(scriptid, script);

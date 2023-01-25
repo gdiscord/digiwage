@@ -8,7 +8,8 @@
 
 #include "addressbook.h"
 #include "amount.h"
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "core_io.h"
 #include "init.h"
 #include "net.h"

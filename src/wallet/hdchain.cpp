@@ -1,7 +1,8 @@
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "chainparams.h"
 #include "wallet/hdchain.h"
 #include "tinyformat.h"

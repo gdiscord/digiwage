@@ -468,7 +468,7 @@ UniValue getblockhash(const UniValue& params, bool fHelp)
 //UniValue getblock(const UniValue& params, bool fHelp)
 UniValue getblock(const JSONRequest& request)
 {
-    if (fHelp || params.size() < 1 || params.size() > 2)
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw std::runtime_error(
             "getblock \"blockhash\" ( verbosity )\n"
             "\nIf verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'.\n"

@@ -39,8 +39,9 @@ public:
     UniValue id;
     std::string strMethod;
     UniValue params;
+    bool fHelp;
 
-    JSONRequest() { id = NullUniValue; }
+    JSONRequest() { id = NullUniValue; params = NullUniValue; fHelp = false;}
     void parse(const UniValue& valRequest);
 };
 

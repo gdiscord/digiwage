@@ -7,7 +7,8 @@
 
 #include "rpc/server.h"
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "init.h"
 #include "main.h"
 #include "random.h"

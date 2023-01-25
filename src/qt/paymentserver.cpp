@@ -10,7 +10,8 @@
 #include "guiutil.h"
 #include "optionsmodel.h"
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "chainparams.h"
 #include "guiinterface.h"
 #include "util.h"

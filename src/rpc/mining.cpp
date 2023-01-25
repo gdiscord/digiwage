@@ -6,14 +6,15 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "amount.h"
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "chainparams.h"
 #include "core_io.h"
 #include "init.h"
 #include "main.h"
 #include "miner.h"
 #include "net.h"
-#include "pow.h"
+//#include "pow.h"
 #include "rpc/server.h"
 #include "util.h"
 #include "validationinterface.h"
@@ -22,7 +23,7 @@
 #include "wallet/wallet.h"
 #endif
 
-#include <stdint.h>
+//#include <stdint.h>
 
 #include <boost/assign/list_of.hpp>
 

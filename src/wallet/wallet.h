@@ -97,7 +97,7 @@ enum AvailableCoinsType {
     STAKEABLE_COINS = 6                             // UTXO's that are valid for staking
 };
 
-struct CompactTallyItem {
+/*struct CompactTallyItem {
     CBitcoinAddress address;
     CAmount nAmount;
     std::vector<CTxIn> vecTxIn;
@@ -105,7 +105,7 @@ struct CompactTallyItem {
     {
         nAmount = 0;
     }
-};
+};*/
 
 /** A key pool entry */
 class CKeyPool

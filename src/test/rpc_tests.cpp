@@ -6,7 +6,8 @@
 #include "rpc/server.h"
 #include "rpc/client.h"
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "netbase.h"
 #include "util.h"
 

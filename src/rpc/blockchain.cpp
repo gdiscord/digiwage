@@ -465,7 +465,8 @@ UniValue getblockhash(const UniValue& params, bool fHelp)
     return pblockindex->GetBlockHash().GetHex();
 }
 
-UniValue getblock(const UniValue& params, bool fHelp)
+//UniValue getblock(const UniValue& params, bool fHelp)
+UniValue getblock(const JSONRPCRequest& request)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw std::runtime_error(

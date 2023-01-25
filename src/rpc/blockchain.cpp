@@ -521,8 +521,9 @@ UniValue getblock(const JSONRequest& request)
 
     LOCK(cs_main);
 
-    std::string strHash = params[0].get_str();
-    uint256 hash(uint256S(strHash));
+   /* std::string strHash = params[0].get_str();
+    uint256 hash(uint256S(strHash));*/
+    uint256 hash(ParseHashV(request.params[0], "blockhash"));
 
     int verbosity = 1;
      if (!request.params[1].isNull()) {

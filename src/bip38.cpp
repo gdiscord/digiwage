@@ -15,6 +15,26 @@
 #include <string>
 
 
+static bool Base58ToHex(const std::string& base58_str, std::string& hex_str)
+{
+    // Base58 decoding
+    // it must be 39 bytes - and another 4 bytes for base58 checksum
+    size_t key_size = 39 + 4;
+    std::vector<unsigned char> vchKey;
+    if (!DecodeBase58(base58_str.c_str(), vchKey, key_size) || vchKey.size() != key_size) {
+        return false;
+    }
+    // Hex enconding
+    std::stringstream ss;
+    ss << std::hex;
+    for (unsigned int i = 0; i < vchKey.size(); i++) {
+        const unsigned char* c = vchKey.data() + i;
+        ss << std::setw(2) << std::setfill('0') << (int)*c;
+    }
+    hex_str = ss.str();
+    return true;
+}
+
 /** 39 bytes - 78 characters
  * 1) Prefix - 2 bytes - 4 chars - strKey[0..3]
  * 2) Flagbyte - 1 byte - 2 chars - strKey[4..5]

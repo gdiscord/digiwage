@@ -10,7 +10,8 @@
 
 #include "addressbook.h"
 #include "amount.h"
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "consensus/tx_verify.h"
 #include "crypter.h"
 #include "kernel.h"

@@ -7,7 +7,8 @@
 
 #include "wallet/walletdb.h"
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "protocol.h"
 #include "serialize.h"
 #include "sync.h"

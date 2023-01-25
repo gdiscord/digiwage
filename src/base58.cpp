@@ -66,10 +66,10 @@ bool DecodeBase58(const char* psz, std::vector<unsigned char>& vch)
     return true;
 }
 
-std::string DecodeBase58(const char* psz)
+std::string DecodeBase58(const char* psz, int max_ret_len)
 {
     std::vector<unsigned char> vch;
-    DecodeBase58(psz, vch);
+    DecodeBase58(psz, vch, max_ret_len);
     std::stringstream ss;
     ss << std::hex;
 

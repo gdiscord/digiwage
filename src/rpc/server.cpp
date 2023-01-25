@@ -302,6 +302,7 @@ static const CRPCCommand vRPCCommands[] =
         {"blockchain", "getblockindexstats", &getblockindexstats, true, false, false},
         {"blockchain", "getblockchaininfo", &getblockchaininfo, true, false, false},
         {"blockchain", "getbestblockhash", &getbestblockhash, true, false, false},
+        {"blockchain", "getblock", &getblock, true, {"blockhash","verbose|verbosity"} },
         {"blockchain", "getblockcount", &getblockcount, true, false, false},
         {"blockchain", "getblock", &getblock, true, false, false},
         {"blockchain", "getblockhash", &getblockhash, true, false, false},
@@ -316,6 +317,7 @@ static const CRPCCommand vRPCCommands[] =
         {"blockchain", "invalidateblock", &invalidateblock, true, true, false},
         {"blockchain", "reconsiderblock", &reconsiderblock, true, true, false},
         {"blockchain", "verifychain", &verifychain, true, false, false},
+        {"blockchain", "scantxoutset", &scantxoutset, true,  {"action", "scanobjects"} },
 
         /* Mining */
         {"mining", "getblocktemplate", &getblocktemplate, true, false, false},
@@ -438,7 +440,8 @@ static const CRPCCommand vRPCCommands[] =
         {"wallet", "rawdelegatestake", &rawdelegatestake, false, false, true},
         {"wallet", "sendfrom", &sendfrom, false, false, true},
         {"wallet", "sendmany", &sendmany, false, false, true},
-        {"wallet", "sendtoaddress", &sendtoaddress, false, false, true},
+        {"dummy",  "amounts","minconf","comment","include_delegated","subtract_fee_from"} },
+        {"wallet", "sendtoaddress", &sendtoaddress, false, {"address","amount","comment","comment-to","subtract_fee"}},
         {"wallet", "sendtoaddressix", &sendtoaddressix, false, false, true},
         {"wallet", "setaccount", &setaccount, true, false, true},
         {"wallet", "setstakesplitthreshold", &setstakesplitthreshold, false, false, true},
@@ -582,6 +585,56 @@ std::string JSONRPCExecBatch(const UniValue& vReq)
         ret.push_back(JSONRPCExecOne(vReq[reqIdx]));
 
     return ret.write() + "\n";
+}
+
+/**
+ * Process named arguments into a vector of positional arguments, based on the
+ * passed-in specification for the RPC call's arguments.
+ */
+static inline JSONRPCRequest transformNamedArguments(const JSONRPCRequest& in, const std::vector<std::string>& argNames)
+{
+    JSONRPCRequest out = in;
+    out.params = UniValue(UniValue::VARR);
+    // Build a map of parameters, and remove ones that have been processed, so that we can throw a focused error if
+    // there is an unknown one.
+    const std::vector<std::string>& keys = in.params.getKeys();
+    const std::vector<UniValue>& values = in.params.getValues();
+    std::unordered_map<std::string, const UniValue*> argsIn;
+    for (size_t i=0; i<keys.size(); ++i) {
+        argsIn[keys[i]] = &values[i];
+    }
+    // Process expected parameters.
+    int hole = 0;
+    for (const std::string &argNamePattern: argNames) {
+        std::vector<std::string> vargNames;
+        boost::algorithm::split(vargNames, argNamePattern, boost::algorithm::is_any_of("|"));
+        auto fr = argsIn.end();
+        for (const std::string & argName : vargNames) {
+            fr = argsIn.find(argName);
+            if (fr != argsIn.end()) {
+                break;
+            }
+        }
+        if (fr != argsIn.end()) {
+            for (int i = 0; i < hole; ++i) {
+                // Fill hole between specified parameters with JSON nulls,
+                // but not at the end (for backwards compatibility with calls
+                // that act based on number of specified parameters).
+                out.params.push_back(UniValue());
+            }
+            hole = 0;
+            out.params.push_back(*fr->second);
+            argsIn.erase(fr);
+        } else {
+            hole += 1;
+        }
+    }
+    // If there are still arguments in the argsIn map, this is an error.
+    if (!argsIn.empty()) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Unknown named parameter " + argsIn.begin()->first);
+    }
+    // Return request with named arguments transformed to positional arguments
+    return out;
 }
 
 UniValue CRPCTable::execute(const std::string &strMethod, const UniValue &params) const

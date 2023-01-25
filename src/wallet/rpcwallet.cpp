@@ -724,7 +724,7 @@ UniValue burn(const UniValue& params, bool fHelp)
 
 UniValue sendtoaddress(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() < 2 || params.size() > 4)
+    if (fHelp || params.size() < 2 || params.size() > 5)
         throw std::runtime_error(
             "sendtoaddress \"digiwageaddress\" amount ( \"comment\" \"comment-to\" )\n"
             "\nSend an amount to a given address. The amount is a real and is rounded to the nearest 0.00000001\n" +
@@ -738,6 +738,8 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
             "4. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
             "                             to which you're sending the transaction. This is not part of the \n"
             "                             transaction, just kept in your wallet.\n"
+            "5. subtract_fee    (boolean, optional, default=false) The fee will be deducted from the amount being sent.\n"
+            "                             The recipient will receive less PIVs than you enter in the amount field.\n"
 
             "\nResult:\n"
             "\"transactionid\"  (string) The transaction id.\n"
@@ -745,6 +747,7 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
             "\nExamples:\n" +
             HelpExampleCli("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" 0.1") +
             HelpExampleCli("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" 0.1 \"donation\" \"seans outpost\"") +
+            HelpExampleCli("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" 0.1 \"\" \"\" true") +
             HelpExampleRpc("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", 0.1, \"donation\", \"seans outpost\""));
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -1548,7 +1551,7 @@ UniValue sendfrom(const UniValue& params, bool fHelp)
 
 UniValue sendmany(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() < 2 || params.size() > 5)
+    if (fHelp || params.size() < 2 || params.size() > 6)
         throw std::runtime_error(
             "sendmany \"fromaccount\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
             "\nSend multiple times. Amounts are double-precision floating point numbers." +
@@ -1563,7 +1566,15 @@ UniValue sendmany(const UniValue& params, bool fHelp)
             "    }\n"
             "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
             "4. \"comment\"             (string, optional) A comment\n"
-            "5. includeDelegated     (bool, optional, default=false) Also include balance delegated to cold stakers\n"
+            "5. include_delegated        (bool, optional, default=false) Also include balance delegated to cold stakers\n"
+            "6. subtract_fee_from       (array, optional) A json array with addresses.\n"
+            "                           The fee will be equally deducted from the amount of each selected address.\n"
+            "                           Those recipients will receive less PIV than you enter in their corresponding amount field.\n"
+            "                           If no addresses are specified here, the sender pays the fee.\n"
+            "    [\n"
+            "      \"address\"          (string) Subtract fee from this address\n"
+            "      ,...\n"
+            "    ]\n"
 
             "\nResult:\n"
             "\"transactionid\"          (string) The transaction id for the send. Only 1 transaction is created regardless of \n"

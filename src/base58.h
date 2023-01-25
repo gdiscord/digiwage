@@ -40,19 +40,19 @@ std::string EncodeBase58(const std::vector<unsigned char>& vch);
  * return true if decoding is successful.
  * psz cannot be NULL.
  */
-bool DecodeBase58(const char* psz, std::vector<unsigned char>& vchRet);
+bool DecodeBase58(const char* psz, std::vector<unsigned char>& vchRet, int max_ret_len);
 
 /**
  * Decode a base58-encoded string (psz) into a string.
  * psz cannot be NULL.
  */
-std::string DecodeBase58(const char* psz);
+std::string DecodeBase58(const char* psz, int max_ret_len = std::numeric_limits<int>::max());
 
 /**
  * Decode a base58-encoded string (str) into a byte vector (vchRet).
  * return true if decoding is successful.
  */
-bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet);
+bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet, int max_ret_len);
 
 /**
  * Encode a byte vector into a base58-encoded string, including checksum
@@ -63,13 +63,13 @@ std::string EncodeBase58Check(const std::vector<unsigned char>& vchIn);
  * Decode a base58-encoded string (psz) that includes a checksum into a byte
  * vector (vchRet), return true if decoding is successful
  */
-inline bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRet);
+inline bool DecodeBase58Check(const char* psz, std::vector<unsigned char>& vchRet, int max_ret_len);
 
 /**
  * Decode a base58-encoded string (str) that includes a checksum into a byte
  * vector (vchRet), return true if decoding is successful
  */
-bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet);
+bool DecodeBase58Check(const std::string& str, std::vector<unsigned char>& vchRet, int max_ret_len);
 
 /**
  * Base class for all base58-encoded data

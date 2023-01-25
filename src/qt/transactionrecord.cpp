@@ -6,7 +6,8 @@
 
 #include "transactionrecord.h"
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "obfuscation.h"
 #include "swifttx.h"
 #include "timedata.h"

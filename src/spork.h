@@ -6,7 +6,8 @@
 #ifndef SPORK_H
 #define SPORK_H
 
-#include "base58.h"
+//#include "base58.h"
+#include "key_io.h"
 #include "hash.h"
 #include "key.h"
 #include "main.h"
